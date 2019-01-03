@@ -1,5 +1,5 @@
 /*
-	*¼ì²âÏµÍ³ÊÇ·ñ¿ªÆôredis
+	*æ£€æµ‹ç³»ç»Ÿæ˜¯å¦å¼€å¯redis
 	*return string
 	*/
 	public  function redis_check(){
@@ -9,7 +9,7 @@
 	 
 	 $test_model  =D("test");
 	 $check =  $test_model->where(array("uniqid"=>$get['order_id'],"status"=>0))->find();
-		  //   $test_model->add(array("content"=>date("Y-m-d H:i:s",time())."->²âÊÔÄÚÈÝ".$posta));
+		  //   $test_model->add(array("content"=>date("Y-m-d H:i:s",time())."->æµ‹è¯•å†…å®¹".$posta));
 		if($check){
 			 
 				$check_Save =  $test_model->where(array("uniqid"=>$get['order_id'],"status"=>0))->save(array("status"=>1));
@@ -27,17 +27,17 @@
 				}
 		}
 	}
-	/*´´½¨¶©µ¥ÑÓÊ±¼Æ»®*/
+	/*åˆ›å»ºè®¢å•å»¶æ—¶è®¡åˆ’*/
 	public function delayqueue_demo_add(){
 		  Vendor("delayqueue.DqClient");
 		  date_default_timezone_set("PRC");
-			//serverÁÐ±í
+			//serveråˆ—è¡¨
 			$server=array(
 				'127.0.0.1:6789',
 			);
 			$dqClient = new \DqClient();
 			$dqClient->addServer($server);
-			$topic ='order_cancel_checker'; //topicÔÚºóÌ¨×¢²á
+			$topic ='order_cancel_checker'; //topicåœ¨åŽå°æ³¨å†Œ
 			$id = uniqid();
 			$data=array(
 				'id'=>$id,
@@ -45,11 +45,11 @@
 					'order_id'=>$id,
 					'topic'=>$topic,
 				),
-				//¿ÉÑ¡£¬ÉèÖÃºóÒÔÕâ¸öÍ¨ÖªÊ±¼äÎª×¼£¬Ä¬ÈÏÑÓÊ±Ê±¼äÔÚ×¢²átopicµÄÊ±ºòÖ¸¶¨
+				//å¯é€‰ï¼Œè®¾ç½®åŽä»¥è¿™ä¸ªé€šçŸ¥æ—¶é—´ä¸ºå‡†ï¼Œé»˜è®¤å»¶æ—¶æ—¶é—´åœ¨æ³¨å†Œtopicçš„æ—¶å€™æŒ‡å®š
 				'fix_time'=>date('Y-m-d H:i:s',time()+30),
 			);
  
-			//Ìí¼Ó
+			//æ·»åŠ 
 			 
 		    $add['content'] = json_encode($data);
 		    $add['status'] = 0;
@@ -61,20 +61,20 @@
 			   $boolRet = $dqClient->add($topic, $data);
 		   }
 	}
-	/*É¾³ý¶©µ¥ÑÓÊ±¼Æ»®*/
+	/*åˆ é™¤è®¢å•å»¶æ—¶è®¡åˆ’*/
 	public function delayqueue_demo_del($_data){
 		  
 		   Vendor("delayqueue.DqClient");
 		  date_default_timezone_set("PRC");
-			//serverÁÐ±í
+			//serveråˆ—è¡¨
 			$server=array(
 				'127.0.0.1:6789',
 			);
 			$dqClient = new \DqClient();
 			$dqClient->addServer($server);
-			$topic ='order_cancel_checker'; //topicÔÚºóÌ¨×¢²á
+			$topic ='order_cancel_checker'; //topicåœ¨åŽå°æ³¨å†Œ
 			$id = $_data['id'];
-			//É¾³ý
+			//åˆ é™¤
 			$boolRet = $dqClient->del($topic,$id);
    
 	}

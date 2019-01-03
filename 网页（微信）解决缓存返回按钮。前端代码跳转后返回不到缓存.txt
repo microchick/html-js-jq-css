@@ -1,30 +1,30 @@
-һ��ҳ���еķ��ذ�ť�¼�
+一、页面中的返回按钮事件
 
-window.history���Բ���window���ǰ׺
+window.history可以不加window这个前缀
 
-���ķ����У�
+他的方法有：
 
-���ƴ���
-window.history.go(-1); //-n��ʾ����nҳ��n��ʾǰ��nҳ��������һ��url
+复制代码
+window.history.go(-1); //-n表示后退n页，n表示前进n页，或者是一个url
 
-window.history.back(); //ͬ����ʾ����һҳ
+window.history.back(); //同样表示后退一页
 
-window.history.forward(); //��ʾǰ��
-���ƴ���
-���ҳ���Ǵ�һ��΢���ϵ���������ȥ�ģ�����ֱ��������������ַ��ȥ�ģ���ʱ�ز�����һҳ�����ǿ����� document.referrer ���ж���û����һҳ�����û�п���ǿ��������ĳһ��ҳ��
+window.history.forward(); //表示前进
+复制代码
+如果页面是从一个微信上的链接跳过去的，或者直接在浏览器输入地址进去的，此时回不到上一页，我们可以用 document.referrer 来判断有没有上一页，如果没有可以强制他进入某一个页面
 if (document.referrer === '') {
-// û����Դҳ����Ϣ��ʱ�򣬸ĳ���ҳURL��ַ
+// 没有来源页面信息的时候，改成首页URL地址
 $('.jsBack').attr('href', '/');
 }
-����������ת��ʷURL����¼
+二、链接跳转历史URL不记录
 
-��aҳ����뵽test3��ҳ�棬test3ҳ������test4ҳ�棬test4ҳ������test3ҳ�棬test4��test3ҳ��ѭ������ʱʹ��history.back()�ͻ�ѭ������test4,test3��
+从a页面进入到test3此页面，test3页面跳到test4页面，test4页面跳到test3页面，test4、test3页面循环，此时使用history.back()就会循环返回test4,test3，
 
-�����һ���������ҵ������ֱ�ӷ��ص�aҳ�棬������ѭ������ʱ���ǿ���ʹ��ҳ��������ת��ʷURL����¼��test3����test4,test4����test3�����ת��ʷ����¼������ʹ��history.back()���ߵ�����ؾ���ֱ�ӷ���aҳ��
+如果有一个需求是我点击返回直接返回到a页面，不进行循环，这时我们可以使用页面链接跳转历史URL不记录，test3跳到test4,test4跳到test3这个跳转历史不记录，于是使用history.back()或者点击返回就能直接返回a页面
 
-�������£�
-���ƴ���
-//ҳ��������ת��ʷURL����¼
+方法如下：
+复制代码
+//页面链接跳转历史URL不记录
 var fnUrlReplace = function (eleLink) {
 if (!eleLink) {
 return;
@@ -35,12 +35,12 @@ if (history.replaceState) {
 history.replaceState(null, document.title, href.split('#')[0] + '#');
 location.replace('');
 } else {
-location.replace(href); //���ս�����������������ת
+location.replace(href); //最终结果是用了这个进行跳转
 }
 }
 };
 
-//������Ӿ��ǲ���Ҫ���м�¼��ת������
+//这个链接就是不需要进行记录跳转的链接
 document.getElementsByTagName('a')[0].onclick = function (event) {
     if (event && event.preventDefault) {
         event.preventDefault();
@@ -48,9 +48,9 @@ document.getElementsByTagName('a')[0].onclick = function (event) {
     fnUrlReplace(this);
     return false;
 };
-���ƴ���
-����Ĵ����У�a���ӵ���תʹ���� location.replace(href);
+复制代码
+上面的代码中，a连接的跳转使用了 location.replace(href);
 
-�÷����ǽ���ַ�滻����url���÷���ͨ��ָ��URL�滻��ǰ��������ʷ��ͻ��ˣ�����Ŀ��
+该方法是将地址替换成新url，该方法通过指定URL替换当前缓存在历史里（客户端）的项目，
 
-��˵�ʹ��replace����֮���㲻��ͨ����ǰ�����͡��� �ˡ��������Ѿ����滻��URL������ص������һЩ����ҳ��ǳ����ã�
+因此当使用replace方法之后，你不能通过“前进”和“后 退”来访问已经被替换的URL，这个特点对于做一些过渡页面非常有用！

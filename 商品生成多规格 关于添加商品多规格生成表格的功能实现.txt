@@ -8,12 +8,12 @@
 <div class="control-group">
     <label class="control-label"> </label>
     <div class="controls">
-        <button id="add_lv1" class="btn btn-primary" type="button">Ìí¼Ó¹æ¸ñÏî</button>
-        <button id="update_table" class="btn btn-success" type="button">Ë¢ĞÂ¹æ¸ñÏîÄ¿±í</button>
+        <button id="add_lv1" class="btn btn-primary" type="button">æ·»åŠ è§„æ ¼é¡¹</button>
+        <button id="update_table" class="btn btn-success" type="button">åˆ·æ–°è§„æ ¼é¡¹ç›®è¡¨</button>
     </div>
 </div>
 <div id="lv_table_con" class="control-group" style="display: none;">
-    <label class="control-label">¹æ¸ñÏîÄ¿±í</label>
+    <label class="control-label">è§„æ ¼é¡¹ç›®è¡¨</label>
     <div class="controls">
         <div id="lv_table">
             
@@ -23,18 +23,18 @@
 <script src="http://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 <script>
     var lv1HTML = '<div class="control-group lv1">' +
-                    '<label class="control-label">¹æ¸ñÃû³Æ</label>' +
+                    '<label class="control-label">è§„æ ¼åç§°</label>' +
                     '<div class="controls">' +
-                        '<input type="text" name="lv1" placeholder="¹æ¸ñÃû³Æ">' +
-                        '<button class="btn btn-primary add_lv2" type="button">Ìí¼Ó²ÎÊı</button>' +
-                        '<button class="btn btn-danger remove_lv1" type="button">É¾³ı¹æ¸ñ</button>' +
+                        '<input type="text" name="lv1" placeholder="è§„æ ¼åç§°">' +
+                        '<button class="btn btn-primary add_lv2" type="button">æ·»åŠ å‚æ•°</button>' +
+                        '<button class="btn btn-danger remove_lv1" type="button">åˆ é™¤è§„æ ¼</button>' +
                     '</div>' +
                     '<div class="controls lv2s"></div>' +
                 '</div>';
     
     var lv2HTML = '<div style="margin-top: 5px;">' +
-                    '<input type="text" name="lv2" placeholder="²ÎÊıÃû³Æ">' +
-                    '<button class="btn btn-danger remove_lv2" type="button">É¾³ı²ÎÊı</button>' +
+                    '<input type="text" name="lv2" placeholder="å‚æ•°åç§°">' +
+                    '<button class="btn btn-danger remove_lv2" type="button">åˆ é™¤å‚æ•°</button>' +
                 '</div>';
      
     $(document).ready(function() {
@@ -69,7 +69,7 @@
             for (var i = 0; i < lv1Arr.length; i++) {
                 var lv2Arr = $(lv1Arr[i]).parents('.lv1').find('input[name="lv2"]');
                 if (!lv2Arr || lv2Arr.length == 0) {
-                    alert('ÇëÏÈÉ¾³ıÎŞ²ÎÊıµÄ¹æ¸ñÏî£¡');
+                    alert('è¯·å…ˆåˆ é™¤æ— å‚æ•°çš„è§„æ ¼é¡¹ï¼');
                     return;
                 }
             }
@@ -81,8 +81,8 @@
             for (var i = 0; i < lv1Arr.length; i++) {
                 tableHTML += '<th width="50">' + $(lv1Arr[i]).val() + '</th>';
             }
-            tableHTML += '            <th width="20">ÏÖ¼Û</th>';
-            tableHTML += '            <th width="20">Ô­¼Û</th>';
+            tableHTML += '            <th width="20">ç°ä»·</th>';
+            tableHTML += '            <th width="20">åŸä»·</th>';
             tableHTML += '        </tr>';
             tableHTML += '    </thead>';
             tableHTML += '    <tbody>';
@@ -153,4 +153,4 @@
 </html>
 
 
-²Î¿¼µØÖ·£ºhttps://www.cnblogs.com/moumou0213/p/7233357.html
+å‚è€ƒåœ°å€ï¼šhttps://www.cnblogs.com/moumou0213/p/7233357.html
