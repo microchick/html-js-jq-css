@@ -1,0 +1,47 @@
+第一次使用然后，，出现上述问题
+
+解决办法均来自互联网：
+
+设置Git的user name和email
+
+git config –global user.name “yourname” 
+git config –global user.email “youremail” 
+生成SSH密钥
+
+查看是否已经有了ssh密钥：cd ~/.ssh 
+如果没有密钥则不会有此文件夹，有则备份删除 
+生存密钥： 
+ssh-keygen -t rsa -C “haiyan.xu.vip@gmail.com” 
+按3个回车，密码为空。 
+Your identification has been saved in /home/tekkub/.ssh/id_rsa. 
+Your public key has been saved in /home/tekkub/.ssh/id_rsa.pub. 
+The key fingerprint is: 
+……………… 
+最后得到了两个文件：id_rsa和id_rsa.pub 
+添加密钥到ssh：ssh-add 文件名,需要之前输入密码.
+
+在github上添加ssh密钥，这要添加的是“id_rsa.pub”里面的公钥。 
+打开https://github.com/,在设置中添加密钥
+--------------------- 
+作者：chaoyueziji123 
+来源：CSDN 
+原文：https://blog.csdn.net/chaoyueziji123/article/details/54669555 
+版权声明：本文为博主原创文章，转载请附上博文链接！
+
+
+之后第二步就是上传啦：
+根据每一个项目的提示来
+
+…or create a new repository on the command line
+echo "# liangke" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin git@github.com:microchick/liangke.git
+git push -u origin master
+
+
+之后 基本就是
+git add .
+git commit -m "first commit"
+git push -u origin master
