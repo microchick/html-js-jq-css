@@ -24,12 +24,7 @@ tpa=http://[^\s]*.gif
 tpa=http://[^\s]*.png
 
 tpa=http://[^\s]*.jpg
-
-tpa=https://[^\s]*.gif
-
-tpa=https://[^\s]*.png
-
-tpa=https://[^\s]*.jpg
+ 
 
 替换为
 (空)
@@ -37,7 +32,7 @@ tpa=https://[^\s]*.jpg
 然后剩下的就是/**/ 了,可以不需要正则替换了.
 如果需要清除可以用
 
- /\*\*/
+/\*\*/
 
 为空
 
@@ -52,9 +47,7 @@ javascript\:if\(confirm\([^)]+\)\)window\.location='([^']+)'
 
 对于/*tpa=标签，查找内容输入
 \/\*tpa=http://[^\s]*\/
-
-\/\*tpa=https://[^\s]*\/
-
+ 
 替换为
 (空)
 
