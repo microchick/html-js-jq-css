@@ -1,0 +1,80 @@
+/*
+	*检测系统是否开启redis
+	*return string
+	*/
+	public  function redis_check(){
+	 
+	 $get = I("get.");
+	  $posta = json_encode($get);
+	 
+	 $test_model  =D("test");
+	 $check =  $test_model->where(array("uniqid"=>$get['order_id'],"status"=>0))->find();
+		  //   $test_model->add(array("content"=>date("Y-m-d H:i:s",time())."->测试内容".$posta));
+		if($check){
+			 
+				$check_Save =  $test_model->where(array("uniqid"=>$get['order_id'],"status"=>0))->save(array("status"=>1));
+				if($check_Save){
+					$dataa['code']=200;
+					$dataa['data']['status']=2;
+					$dataa['data']['msg'] = 'ok';
+					//echo json_encode($dataa);	exit;
+					$this->ajaxReturn($dataa); 
+				}else{
+					$dataa['code']=200;
+					$dataa['data']['status']=2;
+					$dataa['data']['msg'] = 'no';
+					$this->ajaxReturn($dataa);
+				}
+		}
+	}
+	/*创建订单延时计划*/
+	public function delayqueue_demo_add(){
+		  Vendor("delayqueue.DqClient");
+		  date_default_timezone_set("PRC");
+			//server列表
+			$server=array(
+				'127.0.0.1:6789',
+			);
+			$dqClient = new \DqClient();
+			$dqClient->addServer($server);
+			$topic ='order_cancel_checker'; //topic在后台注册
+			$id = uniqid();
+			$data=array(
+				'id'=>$id,
+				'body'=>array(
+					'order_id'=>$id,
+					'topic'=>$topic,
+				),
+				//可选，设置后以这个通知时间为准，默认延时时间在注册topic的时候指定
+				'fix_time'=>date('Y-m-d H:i:s',time()+30),
+			);
+ 
+			//添加
+			 
+		    $add['content'] = json_encode($data);
+		    $add['status'] = 0;
+			 $add['uniqid'] = $id;
+			
+			$test_model  =D("test");
+		   $check =  $test_model->add($add);
+		   if($check){
+			   $boolRet = $dqClient->add($topic, $data);
+		   }
+	}
+	/*删除订单延时计划*/
+	public function delayqueue_demo_del($_data){
+		  
+		   Vendor("delayqueue.DqClient");
+		  date_default_timezone_set("PRC");
+			//server列表
+			$server=array(
+				'127.0.0.1:6789',
+			);
+			$dqClient = new \DqClient();
+			$dqClient->addServer($server);
+			$topic ='order_cancel_checker'; //topic在后台注册
+			$id = $_data['id'];
+			//删除
+			$boolRet = $dqClient->del($topic,$id);
+   
+	}
