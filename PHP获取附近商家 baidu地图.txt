@@ -1,0 +1,111 @@
+后台储存商家详细地址，自动获取商家的经纬度存储到数据库中。
+
+    /**
+     * @param string $address 地址
+     * @param string $city  城市名
+     * @return array
+     */
+  public  function getLatLng($address='',$city=''){
+        $result = array();
+        $ak = '';//您的百度地图ak，可以去百度开发者中心去免费申请
+        $url ="http://api.map.baidu.com/geocoder/v2/?callback=renderOption&output=json&address=".$address."&city=".$city."&ak=".$ak;
+        $data = file_get_contents($url);
+        $data = str_replace('renderOption&&renderOption(', '', $data);
+        $data = str_replace(')', '', $data);
+        $data = json_decode($data,true);
+        if (!empty($data) && $data['status'] == 0) {
+            $result['lat'] = $data['result']['location']['lat'];
+            $result['lng'] = $data['result']['location']['lng'];
+            return $result;//返回经纬度结果
+        }else{
+            return null;
+        }
+  }
+ 
+ 
+ 
+前台获取用户的经纬度地址，获取用户城市。
+
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=C03899adf85230a417ad037197e5bd88"></script>
+<script>
+        var geolocation = new BMap.Geolocation();
+        geolocation.getCurrentPosition(function(r) {
+            if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+                var url = "__MODULE__/Common/location";
+                var lng = r.point.lng;
+                var lat = r.point.lat;
+                $.post(url, {lng: lng, lat: lat},function(data){
+                    if (data == 1) {
+                        return false;
+                    }else{
+                        lyaer.msg('定位失败');
+                    }
+                });
+
+            }else {
+                lyaer.msg('failed' + this.getStatus());
+            }
+        }, {enableHighAccuracy: true})
+</script>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+/**
+ * 定位
+ * @return [type] [description]
+ */
+public function location()
+{
+    $lng = I('post.lng');
+    $lat = I('post.lat');
+    if (!$lng || !$lat) {
+        $this->ajaxReturn(0);
+    }
+    $url = 'http://api.map.baidu.com/geocoder/v2/?ak=C03899adf85230a417ad037197e5bd88&callback=renderReverse&location=' . $lat . ',' . $lng . '&output=json&pois=1';
+    $content = file_get_contents($url);
+    //dump($content); die();
+    preg_match('/"district":"(.*?)",/msi', $content, $matches);
+    $city = $matches[1];
+    if ($city) {
+        $city_id = M('mall_zone')->where('kindname = "' . $city . '"')->getField('pid as id');
+        if ($city_id) {
+            cookie('lng',$lng);
+            cookie('lat',$lat);
+            cookie('city',$city);
+            cookie('city_id', $city_id);
+            $this->ajaxReturn(1);
+        } else {
+            $this->ajaxReturn(0);
+        }
+    }
+}
+
+/**
+ *根据用户商家的经纬度，获取附近的商家
+ */
+public function myNearShop(){
+    $slat = session('lat');
+    $slng = session('lng');
+    $sql =  "SELECT *, ROUND(6378.138*2*ASIN(SQRT(POW(SIN(($slat*PI()/180-lat*PI()/180)/2),2)+COS($slat*PI()/180)*COS(lat*PI()/180)*POW(SIN(($slng*PI()/180-lng*PI()/180)/2),2)))) AS juli  
+    FROM sline_mall where is_check = 1 HAVING juli <= 5";
+    $shop =  M('mall')->query($sql);
+    $this->assign('shop',$shop);
+}
+--------------------- 
+作者：Ziker大魔王 
+来源：CSDN 
+原文：https://blog.csdn.net/qq_33457587/article/details/83052242 
+版权声明：本文为博主原创文章，转载请附上博文链接！
