@@ -33,15 +33,15 @@ The key fingerprint is:
 根据每一个项目的提示来
 
 …or create a new repository on the command line
-echo "# liangke" >> README.md
+echo "# 测试" >> README.md
 git init
 git add README.md
-git commit -m "first commit"
-git remote add origin git@github.com:microchick/liangke.git
+git commit -m "jackie"
+git remote add origin git@github.com:microchick/html-js-jq-css.git
 git push -u origin master
 
 
 之后 基本就是
 git add .
-git commit -m "first commit"
+git commit -m "jackie"
 git push -u origin master
