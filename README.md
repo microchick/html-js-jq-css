@@ -43,7 +43,14 @@ git commit -m "jackie"
 git remote add origin git@github.com:microchick/html-js-jq-css.git
 git push -u origin master
 
-之后 基本就是
-git add .
-git commit -m "jackie"
-git push -u origin master
+###之后基本就是
+· git add .
+· git commit -m "jackie"
+· git push -u origin master
+
+
+
+------------------------------------------
+###强制上传仓库
+· 先执行git pull
+· 然后再执行 git push --force origin master 
