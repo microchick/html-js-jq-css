@@ -53,4 +53,4 @@ git push -u origin master
 ------------------------------------------
 ###强制上传仓库
 · 先执行git pull
-· 然后再执行 git push --force origin master 
+· 然后再执行 git push --force origin master  [执行这句话 仓库的历史记录都不见了]
