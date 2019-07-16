@@ -1,0 +1,50 @@
+localstorage是web前端常用的本地存储服务，它相对于cookie，有几个优势：
+
+①数据存储量大
+
+②不会携带给后台，避免传输没用的数据
+
+③操作简便
+
+1、首先，封装一个全局方法，以便各个地方调用
+
+export function handleLocalStorage(method, key, value) {
+  switch (method) {
+    case 'get' : {
+      let temp = window.localStorage.getItem(key);
+      if (temp) {
+        return temp
+      } else {
+        return false
+      }
+    }
+    case 'set' : {
+      window.localStorage.setItem(key, value);
+      break
+    }
+    case 'remove': {
+      window.localStorage.removeItem(key);
+      break
+    }
+    default : {
+      return false
+    }
+  }
+}
+2、调用方法
+
+①存储
+
+handleLocalStorage('set', 'userName', 'Tom');
+②获取
+
+handleLocalStorage('get', 'userName');
+③删除
+
+handleLocalStorage('remove', 'userName');
+ 
+--------------------- 
+作者：不求甚解bc 
+来源：CSDN 
+原文：https://blog.csdn.net/bocongbo/article/details/81772157 
+版权声明：本文为博主原创文章，转载请附上博文链接！
