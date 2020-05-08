@@ -1,0 +1,58 @@
+快捷创建监听器
+php think make:listener GroupSend
+ 
+ 
+ 
+ 
+ 
+/**
+ * 事件监听处理
+ *
+ * @return mixed
+ */
+public function handle($event)
+{
+	//$event 为从客户端接收的数据
+	$this->websocket->emit("testcallback", ['aaaaa' => 1, 'getdata' => $event['asd']]);
+	//增加如下内容，表示进行对指定room进行群发
+	$this->websocket->to('roomtest')->emit("testcallback", ['guangbo' => 1, 'getdata' => $event['asd']]);
+	//指定客户端发送，假设已知某一客户端连接fd为1，则发送如何
+	$this->websocket->setSender(1)->emit("testcallback", ['guangbo' => 1, 'getdata' => $event['asd']]);
+	//获取当前客户端fd
+	$this->websocket->getSender();
+	//关闭指定客户端连接，参数为fd，默认为当前链接
+	$this->websocket->close();
+}
+
+
+
+
+
+监听器文档v1:
+/*群聊发送接收*/
+OnGroupMessage 
+/*用户与用户私聊接收*/
+OnUserMessage 
+/*加入房间&离开房间*/
+CallBack 
+/*获取聊天列表*/
+'OnChatlist' 
+/*获取个人信息和其他基础信息*/
+'OnUserInfo' 
+/*保持连接 返回3*/
+'OnPing'  
+/*群的基础信息*/
+'OnGroupInfo'  
+
+
+
+
+
+
+wss  nginx代理跳转
+   location /websocket {
+    proxy_pass http://chat.xx.com:8882/;  #实际ws服务器地址
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection “upgrade”;
+    }
